@@ -62,6 +62,32 @@ const readCoach = (input) => {
   checkComma(input);
 };
 
+const checkFoodCount = (input) => {
+  if (input === '') return;
+  const count = input.split(',').filter(Boolean).length;
+  toThrowNewError(
+    !(count >= 0 && count <= 2),
+    '못 먹는 음식은 0~2개만 가능합니다.',
+  );
+};
+
+const checkCommaForFood = (input) => {
+  const foods = input.split(',').filter(Boolean).length;
+  const comma = getCharCount(input, ',');
+  toThrowNewError(
+    foods > 0 && foods - 1 !== comma,
+    '올바르지 않은 형식으로 입력했습니다. ,의 수는 코치의 수보다 1 적어야 합니다.',
+  );
+};
+
+const readFoods = (input) => {
+  hasEmptySpace(input);
+  checkCommaForFood(input);
+  checkFoodCount(input);
+  // TODO: 중복되는 음식 입력하면 ERROR 발생 후 재입력
+  // TODO: 없는 음식 입력하면 ERROR 발생 후 재입력
+};
+
 const check = (input, validate, rest) => {
   try {
     validate(input, rest);
@@ -74,5 +100,6 @@ const check = (input, validate, rest) => {
 
 exports.check = check;
 exports.readCoach = readCoach;
+exports.readFoods = readFoods;
 
 module.exports = exports;
