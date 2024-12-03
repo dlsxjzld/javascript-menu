@@ -4,7 +4,6 @@ const MESSAGE = require('../constants/message.js');
 const OutputView = {
   printInstruction() {
     Console.print(MESSAGE.INSTRUCTION);
-    Console.print('');
   },
 
   printResult(result) {
