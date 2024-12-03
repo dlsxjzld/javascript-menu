@@ -12,46 +12,27 @@ const hasEmptySpace = (input) => {
     '잘못된 입력입니다. 다시 입력해 주세요. 공백은 안됩니다.',
   );
 };
-const splitInput = (input) =>
-  input.split(',').map((value) => value.slice(1, -1).split('-'));
 
-const hasProduct = (input, productList) => {
-  const productNameList = splitInput(input).map((inputs) => inputs[0]);
+const MIN_NAME_RANGE = 2;
+const MAX_NAME_RANGE = 4;
+const checkNameLength = (input) => {
+  const coaches = input.split(',').filter(Boolean);
   toThrowNewError(
-    productNameList.some(
-      (productName) => productList.hasProduct(productName) === false,
+    coaches.some(
+      (coach) => coach.length < MIN_NAME_RANGE || coach.length > MAX_NAME_RANGE,
     ),
-    '존재하지 않는 상품입니다. 다시 입력해 주세요. ex)[콜라-2],[사이다-1]',
+    '코치의 이름은 최소 2글자, 최대 4글자만 가능합니다.',
   );
 };
 
-const hasInventory = (input, productList) => {
-  const inventoryList = splitInput(input);
-  toThrowNewError(
-    inventoryList.some(
-      ([productName, inventory]) =>
-        productList.hasInventory(productName, Number(inventory)) === false,
-    ),
-    '재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요. ex)[콜라-2],[사이다-1]',
-  );
-};
+const MIN_COUNT_RANGE = 2;
+const MAX_COUNT_RANGE = 5;
 
-const isAllPositiveNumberType = (input) => {
-  const inventory = splitInput(input).map((inputs) => Number(inputs[1]));
+const checkCoachCount = (input) => {
+  const coaches = input.split(',');
   toThrowNewError(
-    inventory.some(
-      (number) => Number.isInteger(number) === false || number <= 0,
-    ),
-    '올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요. ex)[콜라-2],[사이다-1]',
-  );
-};
-
-const isRightFormSquareBracket = (input) => {
-  toThrowNewError(
-    input
-      .split(',')
-      .some((value) => !value.startsWith('[') || !value.endsWith(']')),
-    '올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요. ex)[콜라-2],[사이다-1]',
+    coaches.length < MIN_COUNT_RANGE || coaches.length > MAX_COUNT_RANGE,
+    '코치는 최소 2명, 최대 5명까지 가능합니다.',
   );
 };
 
@@ -65,37 +46,20 @@ const getCharCount = (input, targetChar) => {
   return count;
 };
 
-const hasBracketAndDashCount = (input) => {
-  const leftSquareBracket = getCharCount(input, '[');
-  const rightSquareBracket = getCharCount(input, ']');
-  const dash = getCharCount(input, '-');
-  toThrowNewError(
-    leftSquareBracket !== 1 || rightSquareBracket !== 1 || dash !== 1,
-    '올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요.',
-  );
-};
-
-const checkCharCount = (input) => {
-  input.split(',').some(hasBracketAndDashCount);
-};
-
 const checkComma = (input) => {
-  const product = input.split(',').filter(Boolean).length;
+  const coaches = input.split(',').filter(Boolean).length;
   const comma = getCharCount(input, ',');
   toThrowNewError(
-    product - 1 !== comma,
-    '올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요.',
+    coaches - 1 !== comma,
+    '올바르지 않은 형식으로 입력했습니다. ,의 수는 코치의 수보다 1 적어야 합니다.',
   );
 };
 
-const readItem = (input, productList) => {
+const readCoach = (input) => {
   hasEmptySpace(input);
-  isRightFormSquareBracket(input);
-  checkCharCount(input);
+  checkNameLength(input);
+  checkCoachCount(input);
   checkComma(input);
-  isAllPositiveNumberType(input);
-  hasProduct(input, productList);
-  hasInventory(input, productList);
 };
 
 const check = (input, validate, rest) => {
@@ -109,6 +73,6 @@ const check = (input, validate, rest) => {
 };
 
 exports.check = check;
-exports.readItem = readItem;
+exports.readCoach = readCoach;
 
 module.exports = exports;
