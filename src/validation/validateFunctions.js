@@ -89,12 +89,23 @@ const duplicateFoods = (input) => {
   );
 };
 
-const readFoods = (input) => {
+const hasFoods = (input, SAMPLE) => {
+  const foods = input.split(',').filter(Boolean);
+  const foodList = Object.values(SAMPLE)
+    .map((row) => row.split(', '))
+    .flat();
+  toThrowNewError(
+    foods.some((food) => !foodList.includes(food)),
+    '없는 음식을 입력했습니다. 빈값 혹은 음식을 입력해주세요.',
+  );
+};
+
+const readFoods = (input, SAMPLE) => {
   hasEmptySpace(input);
   checkCommaForFood(input);
   checkFoodCount(input);
   duplicateFoods(input);
-  // TODO: 없는 음식 입력하면 ERROR 발생 후 재입력
+  hasFoods(input, SAMPLE);
 };
 
 const check = (input, validate, rest) => {

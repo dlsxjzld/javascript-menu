@@ -53,7 +53,7 @@ class App {
     }
     const coach = this.coachNames[start];
     InputView.readUserInput(`${coach}${MESSAGE.ASK_FOOD_INPUT}`, (input) => {
-      if (check(input, readFoods)) {
+      if (check(input, readFoods, SAMPLE)) {
         this.saveFoodForCoach(input, coach, start);
         return;
       }
