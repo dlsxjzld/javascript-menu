@@ -80,11 +80,20 @@ const checkCommaForFood = (input) => {
   );
 };
 
+const duplicateFoods = (input) => {
+  const foods = input.split(',').filter(Boolean);
+  const setFoods = new Set(foods);
+  toThrowNewError(
+    foods.length !== setFoods.size,
+    '중복된 음식을 입력했습니다.',
+  );
+};
+
 const readFoods = (input) => {
   hasEmptySpace(input);
   checkCommaForFood(input);
   checkFoodCount(input);
-  // TODO: 중복되는 음식 입력하면 ERROR 발생 후 재입력
+  duplicateFoods(input);
   // TODO: 없는 음식 입력하면 ERROR 발생 후 재입력
 };
 
