@@ -1,8 +1,11 @@
+const { Random } = require('@woowacourse/mission-utils');
+
 class Coach {
   constructor(name, sample) {
     this.name = name;
-    this.sample = {}; // 객체 '카테고리': '음식들 문자열'
+    this.sample = {};
     this.convertSample(sample);
+    this.menuList = [];
   }
 
   addFilter(foodList) {
@@ -15,6 +18,24 @@ class Coach {
     keys.forEach((key, index) => {
       this.sample[key] = sampleValues[index];
     });
+  }
+
+  addMenu(dayOfCategory) {
+    const candidateFoods = this.sample[dayOfCategory].map((_, idx) => idx + 1);
+
+    const menuIndex = Random.shuffle(candidateFoods)[0] - 1;
+
+    const menu = this.sample[dayOfCategory][menuIndex];
+
+    if (this.filterFood.includes(menu) || this.menuList.includes(menu)) {
+      this.addMenu(dayOfCategory);
+      return;
+    }
+    this.menuList.push(menu);
+  }
+
+  getMenuList() {
+    return [this.name, ...this.menuList];
   }
 }
 
