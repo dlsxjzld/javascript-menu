@@ -6,6 +6,7 @@ const {
   check,
   readFoods,
 } = require('./validation/validateFunctions.js');
+const Coach = require('./model/Coach.js');
 
 const SAMPLE = Object.freeze({
   일식: '규동, 우동, 미소시루, 스시, 가츠동, 오니기리, 하이라이스, 라멘, 오코노미야끼',
@@ -20,10 +21,12 @@ const SAMPLE = Object.freeze({
 const KEY = Object.keys(SAMPLE);
 
 class App {
+  #coachList;
+  // 메뉴 추천
+
   play() {
     OutputView.printInstruction();
     this.requestCoachNames();
-    // TODO: 코치들 한명마다 SAMPLE 넘겨주고, 못 먹는 음식 받아야함
   }
 
   requestCoachNames() {
@@ -38,28 +41,40 @@ class App {
 
   saveCoachNames(coachNames) {
     this.coachNames = coachNames.split(',');
+    this.#coachList = coachNames
+      .split(',')
+      .map((name) => new Coach(name, { ...SAMPLE }));
 
     this.askFoodForCoach();
   }
 
   askFoodForCoach(start = 0) {
-    for (let i = start; i < this.coachNames.length; i += 1) {
-      const coach = this.coachNames[i];
-      InputView.readUserInput(`${coach}${MESSAGE.ASK_FOOD_INPUT}`, (input) => {
-        if (check(input, readFoods)) {
-          this.saveFoodForCoach(input, coach);
-          OutputView.printResult('');
-          this.askFoodForCoach(i + 1);
-          return;
-        }
-        this.askFoodForCoach(i);
-      });
+    if (start === this.coachNames.length) {
+      this.recommendMenu();
+      return;
     }
+    const coach = this.coachNames[start];
+    InputView.readUserInput(`${coach}${MESSAGE.ASK_FOOD_INPUT}`, (input) => {
+      if (check(input, readFoods)) {
+        this.saveFoodForCoach(input, coach);
+        this.askFoodForCoach(start + 1);
+        return;
+      }
+      this.askFoodForCoach(start);
+    });
   }
 
-  saveFoodForCoach(foods, coach) {
-    const foodList = foods.split(',');
-    // console.log(`${foodList} for ${coach}!`);
+  saveFoodForCoach(foods, coachName) {
+    const foodList = foods.split(',').filter(Boolean);
+    const currentCoach = this.#coachList.find(
+      (coach) => coach.name === coachName,
+    );
+    currentCoach.addFilter(foodList);
+    OutputView.printResult('');
+  }
+
+  recommendMenu() {
+    OutputView.printResult(MESSAGE.MENU_INPUT);
   }
 }
 
