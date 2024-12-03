@@ -7,6 +7,7 @@ const {
   readFoods,
 } = require('./validation/validateFunctions.js');
 const Coach = require('./model/Coach.js');
+const RecommendList = require('./model/RecommendList.js');
 
 const SAMPLE = Object.freeze({
   일식: '규동, 우동, 미소시루, 스시, 가츠동, 오니기리, 하이라이스, 라멘, 오코노미야끼',
@@ -17,12 +18,8 @@ const SAMPLE = Object.freeze({
   양식: '라자냐, 그라탱, 뇨끼, 끼슈, 프렌치 토스트, 바게트, 스파게티, 피자, 파니니',
 });
 
-// const KEY = ['일식', '한식', '중식', '아시안', '양식'];
-const KEY = Object.keys(SAMPLE);
-
 class App {
   #coachList;
-  // 메뉴 추천
 
   play() {
     OutputView.printInstruction();
@@ -33,6 +30,7 @@ class App {
     InputView.readUserInput(MESSAGE.COACH_INPUT, (input) => {
       if (check(input, readCoach)) {
         this.saveCoachNames(input);
+
         return;
       }
       this.requestCoachNames();
@@ -44,7 +42,7 @@ class App {
     this.#coachList = coachNames
       .split(',')
       .map((name) => new Coach(name, { ...SAMPLE }));
-
+    OutputView.printResult('');
     this.askFoodForCoach();
   }
 
@@ -56,25 +54,46 @@ class App {
     const coach = this.coachNames[start];
     InputView.readUserInput(`${coach}${MESSAGE.ASK_FOOD_INPUT}`, (input) => {
       if (check(input, readFoods)) {
-        this.saveFoodForCoach(input, coach);
-        this.askFoodForCoach(start + 1);
+        this.saveFoodForCoach(input, coach, start);
         return;
       }
       this.askFoodForCoach(start);
     });
   }
 
-  saveFoodForCoach(foods, coachName) {
+  saveFoodForCoach(foods, coachName, start) {
     const foodList = foods.split(',').filter(Boolean);
     const currentCoach = this.#coachList.find(
       (coach) => coach.name === coachName,
     );
     currentCoach.addFilter(foodList);
     OutputView.printResult('');
+    this.askFoodForCoach(start + 1);
   }
 
   recommendMenu() {
     OutputView.printResult(MESSAGE.MENU_INPUT);
+    const recommendList = new RecommendList({ ...SAMPLE });
+    const weekCategories = recommendList.getWeekCategories();
+    this.pickMenuForCoaches(weekCategories);
+    this.printAllMenuList(weekCategories);
+  }
+
+  pickMenuForCoaches(weekCategories) {
+    this.#coachList.forEach((coach) => {
+      weekCategories.slice(1).forEach((category) => {
+        coach.addMenu(category);
+      });
+    });
+  }
+
+  printAllMenuList(weekCategories) {
+    const header = ['구분', '월요일', '화요일', '수요일', '목요일', '금요일'];
+    const categories = weekCategories;
+    const allCoachMenuList = this.#coachList.map((coach) =>
+      coach.getMenuList(),
+    );
+    OutputView.printAllMenuList({ header, categories, allCoachMenuList });
   }
 }
 
