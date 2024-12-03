@@ -1,16 +1,20 @@
 const InputView = require('./view/InputView.js');
 const OutputView = require('./view/OutputView.js');
 const MESSAGE = require('./constants/message.js');
-const { readCoach, check } = require('./validation/validateFunctions.js');
+const {
+  readCoach,
+  check,
+  readFoods,
+} = require('./validation/validateFunctions.js');
 
-const SAMPLE = {
+const SAMPLE = Object.freeze({
   일식: '규동, 우동, 미소시루, 스시, 가츠동, 오니기리, 하이라이스, 라멘, 오코노미야끼',
   한식: '김밥, 김치찌개, 쌈밥, 된장찌개, 비빔밥, 칼국수, 불고기, 떡볶이, 제육볶음',
   중식: '깐풍기, 볶음면, 동파육, 짜장면, 짬뽕, 마파두부, 탕수육, 토마토 달걀볶음, 고추잡채',
   아시안:
     '팟타이, 카오 팟, 나시고렝, 파인애플 볶음밥, 쌀국수, 똠얌꿍, 반미, 월남쌈, 분짜',
   양식: '라자냐, 그라탱, 뇨끼, 끼슈, 프렌치 토스트, 바게트, 스파게티, 피자, 파니니',
-};
+});
 
 // const KEY = ['일식', '한식', '중식', '아시안', '양식'];
 const KEY = Object.keys(SAMPLE);
@@ -19,6 +23,7 @@ class App {
   play() {
     OutputView.printInstruction();
     this.requestCoachNames();
+    // TODO: 코치들 한명마다 SAMPLE 넘겨주고, 못 먹는 음식 받아야함
   }
 
   requestCoachNames() {
@@ -32,10 +37,29 @@ class App {
   }
 
   saveCoachNames(coachNames) {
-    const coachs = coachNames.split(',');
-    this.coachNames = coachNames;
+    this.coachNames = coachNames.split(',');
 
-    console.log('this.coachNames', this.coachNames);
+    this.askFoodForCoach();
+  }
+
+  askFoodForCoach(start = 0) {
+    for (let i = start; i < this.coachNames.length; i += 1) {
+      const coach = this.coachNames[i];
+      InputView.readUserInput(`${coach}${MESSAGE.ASK_FOOD_INPUT}`, (input) => {
+        if (check(input, readFoods)) {
+          this.saveFoodForCoach(input, coach);
+          OutputView.printResult('');
+          this.askFoodForCoach(i + 1);
+          return;
+        }
+        this.askFoodForCoach(i);
+      });
+    }
+  }
+
+  saveFoodForCoach(foods, coach) {
+    const foodList = foods.split(',');
+    // console.log(`${foodList} for ${coach}!`);
   }
 }
 
