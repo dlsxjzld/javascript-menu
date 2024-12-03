@@ -1,5 +1,7 @@
 const InputView = require('./view/InputView.js');
 const OutputView = require('./view/OutputView.js');
+const MESSAGE = require('./constants/message.js');
+const { readCoach, check } = require('./validation/validateFunctions.js');
 
 const SAMPLE = {
   일식: '규동, 우동, 미소시루, 스시, 가츠동, 오니기리, 하이라이스, 라멘, 오코노미야끼',
@@ -10,10 +12,30 @@ const SAMPLE = {
   양식: '라자냐, 그라탱, 뇨끼, 끼슈, 프렌치 토스트, 바게트, 스파게티, 피자, 파니니',
 };
 
+// const KEY = ['일식', '한식', '중식', '아시안', '양식'];
+const KEY = Object.keys(SAMPLE);
+
 class App {
   play() {
-    OutputView.printResult('test');
-    console.log('start!');
+    OutputView.printInstruction();
+    this.requestCoachNames();
+  }
+
+  requestCoachNames() {
+    InputView.readUserInput(MESSAGE.COACH_INPUT, (input) => {
+      if (check(input, readCoach)) {
+        this.saveCoachNames(input);
+        return;
+      }
+      this.requestCoachNames();
+    });
+  }
+
+  saveCoachNames(coachNames) {
+    const coachs = coachNames.split(',');
+    this.coachNames = coachNames;
+
+    console.log('this.coachNames', this.coachNames);
   }
 }
 
