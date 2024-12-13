@@ -47,4 +47,15 @@ export default class RecommendPlanner {
     }
     this.pickCategory();
   }
+
+  pickMenu(category) {
+    const menusIndex = Array.from(
+      { length: menuForCategoryList[category].length },
+      (_, idx) => idx,
+    );
+
+    const menuIndex = Random.shuffle(menusIndex)[0];
+    const menu = menuForCategoryList[category][menuIndex];
+    return menu;
+  }
 }
