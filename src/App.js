@@ -16,6 +16,18 @@ const SAMPLE = {
 class App {
   async play() {
     OutputView.printMenuInstruction();
+    const coaches = await this.getCoaches();
+  }
+
+  async getCoaches() {
+    try {
+      const coaches = await InputView.readCoachName();
+      validateSomething(coaches);
+      return coaches;
+    } catch (error) {
+      OutputView.printResult(error.message);
+      return this.getCoaches();
+    }
   }
 }
 
