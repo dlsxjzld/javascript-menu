@@ -52,7 +52,7 @@ export const validateCoaches = (input) => {
   checkDuplicateCoach(input);
 };
 
-const checkFoodsCount = (input) => {
+export const checkFoodsCount = (input) => {
   if (input === '') return;
   const foodsWithNoEmptyString = input.split(',').filter(Boolean).length;
   const delimiter = input.split('').filter((char) => char === ',').length;
@@ -68,7 +68,7 @@ const checkFoodsCount = (input) => {
   );
 };
 
-const checkSampleMenu = (input) => {
+export const checkSampleMenu = (input) => {
   if (input === '') return;
   const foods = input.split(',');
   const sampleFoods = Object.values(SAMPLE)
@@ -80,7 +80,7 @@ const checkSampleMenu = (input) => {
   );
 };
 
-const checkDuplicateMenu = (input) => {
+export const checkDuplicateMenu = (input) => {
   if (input === '') return;
   const originFoods = input.split(',');
   const setFoods = new Set(originFoods);
