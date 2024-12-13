@@ -11,7 +11,7 @@ export const toThrowNewError = (condition, errorMessage) => {
 const isEmptyString = (input) => {
   toThrowNewError(
     input === '',
-    `${ERROR_MESSAGE.INVALID} 빈 문자열은 안됩니다.`,
+    `${ERROR_MESSAGE.INVALID} ${ERROR_MESSAGE.INVALID_EMPTY_STRING}`,
   );
 };
 
@@ -42,7 +42,7 @@ const checkDuplicateCoach = (input) => {
   const setCoaches = new Set(originCoaches);
   toThrowNewError(
     originCoaches.length !== setCoaches.size,
-    '중복된 이름은 안됩니다.',
+    ERROR_MESSAGE.INVALID_DUPLICATE_NAME,
   );
 };
 
@@ -87,7 +87,7 @@ const checkDuplicateMenu = (input) => {
   const setFoods = new Set(originFoods);
   toThrowNewError(
     originFoods.length !== setFoods.size,
-    '중복된 음식은 안됩니다.',
+    ERROR_MESSAGE.INVALID_DUPLICATE_MENU,
   );
 };
 
