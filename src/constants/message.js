@@ -11,4 +11,5 @@ export const ERROR_MESSAGE = {
   INVALID_COACH_NAME_LENGTH: '코치의 이름은 최소 2글자, 최대 4글자입니다.',
   INVALID_COACH_COUNT: '코치는 최소 2명 이상 입력해야 합니다.',
   INVALID_MENU: '존재하지 않는 메뉴입니다.',
+  INVALID_MENU_COUNT: '못 먹는 메뉴는 0~2개 입니다.',
 };
