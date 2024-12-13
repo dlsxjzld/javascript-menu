@@ -5,21 +5,26 @@ import {
   validateCantEatFoods,
 } from './validation/validateFunctions.js';
 
-import { MESSAGE } from './constants/message.js';
 import RecommendPlanner from './model/RecommendPlanner.js';
 
 class App {
   async play() {
     OutputView.printMenuInstruction();
     const coaches = await this.getCoaches();
+    const cantEatMenuList = await this.getCantEatMenuList(coaches);
 
+    const recommendPlanner = new RecommendPlanner(coaches, cantEatMenuList);
+    recommendPlanner.start();
+    OutputView.printMenuResult(recommendPlanner.getResult());
+  }
+
+  async getCantEatMenuList(coaches) {
     const cantEatMenu = {};
     for (const coach of coaches) {
       const cantEat = await this.getCantEat(coach);
       cantEatMenu[coach] = cantEat;
     }
-    const recommendPlanner = new RecommendPlanner(coaches, cantEatMenu);
-    recommendPlanner.start();
+    return cantEatMenu;
   }
 
   async getCoaches() {
