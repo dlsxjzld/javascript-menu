@@ -13,4 +13,19 @@ export const OutputView = {
   printMenuResultInstruction() {
     Console.print(MESSAGE.MENU_RESULT_INSTRUCTION);
   },
+
+  printMenuRecommendFinish() {
+    Console.print(MESSAGE.FINISH_RECOMMEND);
+  },
+
+  printMenuResult({ week, categories, coaches }) {
+    this.printMenuResultInstruction();
+    this.printResult(week);
+    this.printResult(categories);
+    coaches.forEach((coach) => {
+      this.printResult(coach);
+    });
+    this.printResult('');
+    this.printMenuRecommendFinish();
+  },
 };
