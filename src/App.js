@@ -1,6 +1,6 @@
 import { InputView } from './view/InputView.js';
 import { OutputView } from './view/OutputView.js';
-import { validateSomething } from './validation/validateFunctions.js';
+import { validateCoaches } from './validation/validateFunctions.js';
 
 import { MESSAGE } from './constants/message.js';
 
@@ -22,7 +22,7 @@ class App {
   async getCoaches() {
     try {
       const coaches = await InputView.readCoachName();
-      validateSomething(coaches);
+      validateCoaches(coaches);
       return coaches;
     } catch (error) {
       OutputView.printResult(error.message);
