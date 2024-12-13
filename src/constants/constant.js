@@ -1,1 +1,6 @@
-export const CONSTANT = {};
+export const CONSTANT = {
+  NAME_MIN_LENGTH: 2,
+  NAME_MAX_LENGTH: 4,
+  COUNT_MIN: 2,
+  COUNT_MAX: 5,
+};
