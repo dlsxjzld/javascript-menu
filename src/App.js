@@ -17,16 +17,33 @@ class App {
   async play() {
     OutputView.printMenuInstruction();
     const coaches = await this.getCoaches();
+
+    const cantEatMenu = {};
+    for (const coach of coaches) {
+      const cantEat = await this.getCantEat(coach);
+      cantEatMenu[coach] = cantEat;
+    }
   }
 
   async getCoaches() {
     try {
       const coaches = await InputView.readCoachName();
       validateCoaches(coaches);
-      return coaches;
+      return coaches.split(',');
     } catch (error) {
       OutputView.printResult(error.message);
       return this.getCoaches();
+    }
+  }
+
+  async getCantEat(coach) {
+    try {
+      const cantEat = await InputView.readCantEat(coach);
+      // validateCantEat(cantEat);
+      return cantEat.split(',');
+    } catch (error) {
+      OutputView.printResult(error.message);
+      return this.getCantEat();
     }
   }
 }
