@@ -32,9 +32,8 @@ export default class RecommendPlanner {
 
   start() {
     this.pickCategory();
-    // 코치 한명에게 카테고리 고른 것들 통해서 다 넣기?
-    const coachCount = 0;
-    this.pushMenuToAllCoach(coachCount);
+    const restCoaches = this.coaches;
+    this.pushMenuToAllCoach(restCoaches);
   }
 
   pickCategory() {
@@ -51,36 +50,35 @@ export default class RecommendPlanner {
     this.pickCategory();
   }
 
-  pushMenuToAllCoach(coachCount) {
-    if (coachCount === this.coaches.length) {
+  pushMenuToAllCoach(restCoaches) {
+    if (restCoaches.length === 0) {
       return;
     }
-    const coach = this.coaches[coachCount];
+    const coach = restCoaches[0];
     const cantEatList = this.coachesCantEat[coach];
-    const categoryCount = 1;
-    this.pushMenuToCoach(coach, cantEatList, categoryCount);
+    const restCategories = this.categories.slice(1);
+    this.pushMenuToCoach(coach, cantEatList, restCategories);
 
-    this.pushMenuToAllCoach(coachCount + 1);
+    this.pushMenuToAllCoach(restCoaches.slice(1));
   }
 
-  pushMenuToCoach(coach, cantEatList, categoryCount) {
-    if (categoryCount === this.week.length) {
+  pushMenuToCoach(coach, cantEatList, restCategories) {
+    if (restCategories.length === 0) {
       return;
     }
-    const menu = this.pickMenu(categoryCount);
+    const menu = this.pickMenu(restCategories[0]);
     if (
       cantEatList.includes(menu) ||
       this.foodForCoaches[coach].includes(menu)
     ) {
-      this.pushMenuToCoach(coach, cantEatList, categoryCount);
+      this.pushMenuToCoach(coach, cantEatList, restCategories);
       return;
     }
     this.foodForCoaches[coach].push(menu);
-    this.pushMenuToCoach(coach, cantEatList, categoryCount + 1);
+    this.pushMenuToCoach(coach, cantEatList, restCategories.slice(1));
   }
 
-  pickMenu(categoryCount) {
-    const category = this.categories[categoryCount];
+  pickMenu(category) {
     const menusIndex = Array.from(
       { length: menuForCategoryList[category].length },
       (_, idx) => idx + 1,
