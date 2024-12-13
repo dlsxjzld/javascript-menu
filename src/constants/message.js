@@ -1,14 +1,13 @@
 export const MESSAGE = {
-  GAME_INSTRUCTION: '다리 건너기 게임을 시작합니다.\n',
-  ASK_BRIDGE_SIZE: '다리의 길이를 입력해주세요.\n',
-  ASK_MOVE: '이동할 칸을 선택해주세요. (위: U, 아래: D)\n',
-  ASK_GAME_TRY:
-    '게임을 다시 시도할지 여부를 입력해주세요. (재시도: R, 종료: Q)\n',
-  GAME_RESULT_INSTRUCTION: '최종 게임 결과',
-  GAME_SUCCESS_RESULT: (result) => `게임 성공 여부: ${result}`,
-  GAME_TRY_COUNT: (result) => `총 시도한 횟수: ${result}`,
+  MENU_INSTRUCTION: '점심 메뉴 추천을 시작합니다.\n',
+  ASK_COACH_NAME: '코치의 이름을 입력해 주세요. (, 로 구분)\n',
+  ASK_CANT_EAT: (coach) => `${coach}(이)가 못 먹는 메뉴를 입력해 주세요.\n`,
+  MENU_RESULT_INSTRUCTION: '메뉴 추천 결과입니다.',
+  FINISH_RECOMMEND: '추천을 완료했습니다.',
 };
 
 export const ERROR_MESSAGE = {
   INVALID: '다리 길이는 3부터 20 사이의 숫자여야 합니다.',
+  INVALID_COACH_NAME: '코치는 최소 2명 이상 입력해야 합니다.',
+  INVALID_MENU: '존재하지 않는 메뉴입니다.',
 };
