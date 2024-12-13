@@ -1,4 +1,4 @@
-import { SAMPLE } from '../category.js';
+import { SAMPLE } from '../model/RecommendPlanner.js';
 import { CONSTANT } from '../constants/constant.js';
 import { ERROR_MESSAGE } from '../constants/message.js';
 
