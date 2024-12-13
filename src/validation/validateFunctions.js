@@ -1,3 +1,4 @@
+import { SAMPLE } from '../App.js';
 import { CONSTANT } from '../constants/constant.js';
 import { ERROR_MESSAGE } from '../constants/message.js';
 
@@ -35,16 +36,9 @@ const checkCoachesNameLength = (input) => {
 const checkCoachesCount = (input) => {
   const coaches = input.split(',').filter(Boolean).length;
   toThrowNewError(
-    coaches.length < CONSTANT.COUNT_MIN || coaches.length > CONSTANT.COUNT_MAX,
+    coaches.length < CONSTANT.COACH_COUNT_MIN ||
+      coaches.length > CONSTANT.COACH_COUNT_MAX,
     ERROR_MESSAGE.INVALID_COACH_NAME_LENGTH,
-  );
-};
-
-const checkInteger = (input) => {
-  const bridgeSize = Number(input);
-  toThrowNewError(
-    Number.isInteger(bridgeSize) === false,
-    `${ERROR_MESSAGE.INVALID} 정수만 가능합니다.`,
   );
 };
 
@@ -54,7 +48,37 @@ export const validateCoaches = (input) => {
   checkCoachesNameLength(input);
   checkCoachesCount(input);
 };
-// export const validateSomething = (input) => {
-//   hasEmptySpace(input);
-//   isEmptyString(input);
-// };
+
+const checkFoodsCount = (input) => {
+  if (input === '') return;
+  const foodsWithNoEmptyString = input.split(',').filter(Boolean).length;
+  const delimiter = input.split('').filter((char) => char === ',').length;
+
+  const foods = input.split(',').length;
+  toThrowNewError(
+    foodsWithNoEmptyString - 1 !== delimiter,
+    ERROR_MESSAGE.INVALID_MENU_COUNT,
+  );
+  toThrowNewError(
+    foods < CONSTANT.FOOD_COUNT_MIN || foods > CONSTANT.FOOD_COUNT_MAX,
+    ERROR_MESSAGE.INVALID_MENU_COUNT,
+  );
+};
+
+const checkSampleMenu = (input) => {
+  if (input === '') return;
+  const foods = input.split(',');
+  const sampleFoods = Object.values(SAMPLE)
+    .map((list) => list.split(', '))
+    .flat();
+  toThrowNewError(
+    foods.some((food) => sampleFoods.includes(food) === false),
+    ERROR_MESSAGE.INVALID_MENU,
+  );
+};
+
+export const validateCantEatFoods = (input) => {
+  hasEmptySpace(input);
+  checkFoodsCount(input);
+  checkSampleMenu(input);
+};
