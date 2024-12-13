@@ -10,16 +10,24 @@ export const SAMPLE = Object.freeze({
 });
 
 export const CATEGORIES = Object.keys(SAMPLE);
+const menuForCategoryList = {};
+CATEGORIES.forEach((key) => {
+  menuForCategoryList[key] = SAMPLE[key].split(', ');
+});
 
 export default class RecommendPlanner {
   week = ['구분', '월요일', '화요일', '수요일', '목요일', '금요일'];
 
   categories = ['카테고리'];
 
-  foodForCoaches = []; //
+  foodForCoaches = {};
 
-  constructor(coachesCantEat) {
-    this.coachesCantEat = coachesCantEat; // 코치 별로 못 먹는 음식 담긴 객체
+  constructor(coaches, coachesCantEat) {
+    this.coachesCantEat = coachesCantEat;
+    this.coaches = coaches;
+    coaches.forEach((coach) => {
+      this.foodForCoaches[coach] = [`${coach}`];
+    });
   }
 
   start() {
@@ -34,12 +42,9 @@ export default class RecommendPlanner {
     const categoryCount = this.categories.filter(
       (myCategory) => myCategory === category,
     ).length;
-
     if (categoryCount < 2) {
       this.categories.push(category);
     }
     this.pickCategory();
   }
-
-  pickMenu() {}
 }
