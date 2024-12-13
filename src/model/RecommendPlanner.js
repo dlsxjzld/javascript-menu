@@ -77,11 +77,21 @@ export default class RecommendPlanner {
   pickMenu(category) {
     const menusIndex = Array.from(
       { length: menuForCategoryList[category].length },
-      (_, idx) => idx,
+      (_, idx) => idx + 1,
     );
 
-    const menuIndex = Random.shuffle(menusIndex)[0];
+    const menuIndex = Random.shuffle(menusIndex)[0] - 1;
     const menu = menuForCategoryList[category][menuIndex];
     return menu;
+  }
+
+  getResult() {
+    return {
+      week: `[ ${this.week.join(' | ')} ]`,
+      categories: `[ ${this.categories.join(' | ')} ]`,
+      coaches: Object.values(this.foodForCoaches).map(
+        (coach) => `[ ${coach.join(' | ')} ]`,
+      ),
+    };
   }
 }
