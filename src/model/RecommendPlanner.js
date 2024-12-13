@@ -1,3 +1,5 @@
+import { Random } from '@woowacourse/mission-utils';
+
 export const SAMPLE = Object.freeze({
   일식: '규동, 우동, 미소시루, 스시, 가츠동, 오니기리, 하이라이스, 라멘, 오코노미야끼',
   한식: '김밥, 김치찌개, 쌈밥, 된장찌개, 비빔밥, 칼국수, 불고기, 떡볶이, 제육볶음',
@@ -7,14 +9,37 @@ export const SAMPLE = Object.freeze({
   양식: '라자냐, 그라탱, 뇨끼, 끼슈, 프렌치 토스트, 바게트, 스파게티, 피자, 파니니',
 });
 
+export const CATEGORIES = Object.keys(SAMPLE);
+
 export default class RecommendPlanner {
   week = ['구분', '월요일', '화요일', '수요일', '목요일', '금요일'];
 
-  category = ['카테고리'];
+  categories = ['카테고리'];
 
-  foodForCoaches = [];
+  foodForCoaches = []; //
 
   constructor(coachesCantEat) {
     this.coachesCantEat = coachesCantEat; // 코치 별로 못 먹는 음식 담긴 객체
   }
+
+  start() {
+    this.pickCategory();
+  }
+
+  pickCategory() {
+    if (this.categories.length === this.week.length) {
+      return;
+    }
+    const category = CATEGORIES[Random.pickNumberInRange(1, 5) - 1];
+    const categoryCount = this.categories.filter(
+      (myCategory) => myCategory === category,
+    ).length;
+
+    if (categoryCount < 2) {
+      this.categories.push(category);
+    }
+    this.pickCategory();
+  }
+
+  pickMenu() {}
 }
