@@ -30,8 +30,14 @@ export default class RecommendPlanner {
 
   start(coaches, coachesCantEat) {
     this.pickCategory();
-    const restCoaches = coaches;
-    this.pushMenuToAllCoach(restCoaches, coachesCantEat);
+
+    coaches.forEach((coach) => {
+      const cantEatList = coachesCantEat[coach];
+      const categories = this.categories.slice(1);
+      categories.forEach((category) => {
+        this.pushMenuToCoach(coach, cantEatList, category);
+      });
+    });
   }
 
   pickCategory() {
@@ -48,32 +54,16 @@ export default class RecommendPlanner {
     this.pickCategory();
   }
 
-  pushMenuToAllCoach(restCoaches, coachesCantEat) {
-    if (restCoaches.length === 0) {
-      return;
-    }
-    const coach = restCoaches[0];
-    const cantEatList = coachesCantEat[coach];
-    const restCategories = this.categories.slice(1);
-    this.pushMenuToCoach(coach, cantEatList, restCategories);
-
-    this.pushMenuToAllCoach(restCoaches.slice(1), coachesCantEat);
-  }
-
-  pushMenuToCoach(coach, cantEatList, restCategories) {
-    if (restCategories.length === 0) {
-      return;
-    }
-    const menu = this.pickMenu(restCategories[0]);
+  pushMenuToCoach(coach, cantEatList, category) {
+    const menu = this.pickMenu(category);
     if (
       cantEatList.includes(menu) ||
       this.foodForCoaches[coach].includes(menu)
     ) {
-      this.pushMenuToCoach(coach, cantEatList, restCategories);
+      this.pushMenuToCoach(coach, cantEatList, category);
       return;
     }
     this.foodForCoaches[coach].push(menu);
-    this.pushMenuToCoach(coach, cantEatList, restCategories.slice(1));
   }
 
   pickMenu(category) {
