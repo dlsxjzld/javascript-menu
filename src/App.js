@@ -6,6 +6,7 @@ import {
 } from './validation/validateFunctions.js';
 
 import { MESSAGE } from './constants/message.js';
+import RecommendPlanner from './model/RecommendPlanner.js';
 
 class App {
   async play() {
@@ -17,6 +18,8 @@ class App {
       const cantEat = await this.getCantEat(coach);
       cantEatMenu[coach] = cantEat;
     }
+    const recommendPlanner = new RecommendPlanner(coaches, cantEatMenu);
+    recommendPlanner.start();
   }
 
   async getCoaches() {
