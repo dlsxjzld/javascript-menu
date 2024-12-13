@@ -22,18 +22,16 @@ export default class RecommendPlanner {
 
   foodForCoaches = {};
 
-  constructor(coaches, coachesCantEat) {
-    this.coachesCantEat = coachesCantEat;
-    this.coaches = coaches;
+  constructor(coaches) {
     coaches.forEach((coach) => {
       this.foodForCoaches[coach] = [`${coach}`];
     });
   }
 
-  start() {
+  start(coaches, coachesCantEat) {
     this.pickCategory();
-    const restCoaches = this.coaches;
-    this.pushMenuToAllCoach(restCoaches);
+    const restCoaches = coaches;
+    this.pushMenuToAllCoach(restCoaches, coachesCantEat);
   }
 
   pickCategory() {
@@ -50,16 +48,16 @@ export default class RecommendPlanner {
     this.pickCategory();
   }
 
-  pushMenuToAllCoach(restCoaches) {
+  pushMenuToAllCoach(restCoaches, coachesCantEat) {
     if (restCoaches.length === 0) {
       return;
     }
     const coach = restCoaches[0];
-    const cantEatList = this.coachesCantEat[coach];
+    const cantEatList = coachesCantEat[coach];
     const restCategories = this.categories.slice(1);
     this.pushMenuToCoach(coach, cantEatList, restCategories);
 
-    this.pushMenuToAllCoach(restCoaches.slice(1));
+    this.pushMenuToAllCoach(restCoaches.slice(1), coachesCantEat);
   }
 
   pushMenuToCoach(coach, cantEatList, restCategories) {
