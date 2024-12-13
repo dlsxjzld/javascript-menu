@@ -21,6 +21,7 @@ const isEmptyString = (input) => {
     `${ERROR_MESSAGE.INVALID} 빈 문자열은 안됩니다.`,
   );
 };
+
 const checkCoachesNameLength = (input) => {
   toThrowNewError(
     input
@@ -33,6 +34,7 @@ const checkCoachesNameLength = (input) => {
     ERROR_MESSAGE.INVALID_COACH_NAME_LENGTH,
   );
 };
+
 const checkCoachesCount = (input) => {
   const coaches = input.split(',').filter(Boolean).length;
   toThrowNewError(
@@ -42,11 +44,21 @@ const checkCoachesCount = (input) => {
   );
 };
 
+const checkDuplicateCoach = (input) => {
+  const originCoaches = input.split(',').filter(Boolean);
+  const setCoaches = new Set(originCoaches);
+  toThrowNewError(
+    originCoaches.length !== setCoaches.size,
+    '중복된 이름은 안됩니다.',
+  );
+};
+
 export const validateCoaches = (input) => {
   hasEmptySpace(input);
   isEmptyString(input);
   checkCoachesNameLength(input);
   checkCoachesCount(input);
+  checkDuplicateCoach(input);
 };
 
 const checkFoodsCount = (input) => {
