@@ -8,14 +8,14 @@ export const toThrowNewError = (condition, errorMessage) => {
   }
 };
 
-const isEmptyString = (input) => {
+export const isEmptyString = (input) => {
   toThrowNewError(
     input === '',
     `${ERROR_MESSAGE.INVALID} ${ERROR_MESSAGE.INVALID_EMPTY_STRING}`,
   );
 };
 
-const checkCoachesNameLength = (input) => {
+export const checkCoachesNameLength = (input) => {
   toThrowNewError(
     input
       .split(',')
@@ -28,16 +28,15 @@ const checkCoachesNameLength = (input) => {
   );
 };
 
-const checkCoachesCount = (input) => {
+export const checkCoachesCount = (input) => {
   const coaches = input.split(',').filter(Boolean).length;
   toThrowNewError(
-    coaches.length < CONSTANT.COACH_COUNT_MIN ||
-      coaches.length > CONSTANT.COACH_COUNT_MAX,
+    coaches < CONSTANT.COACH_COUNT_MIN || coaches > CONSTANT.COACH_COUNT_MAX,
     ERROR_MESSAGE.INVALID_COACH_NAME_LENGTH,
   );
 };
 
-const checkDuplicateCoach = (input) => {
+export const checkDuplicateCoach = (input) => {
   const originCoaches = input.split(',').filter(Boolean);
   const setCoaches = new Set(originCoaches);
   toThrowNewError(
