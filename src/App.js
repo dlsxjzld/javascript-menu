@@ -13,8 +13,8 @@ class App {
     const coaches = await this.getCoaches();
     const cantEatMenuList = await this.getCantEatMenuList(coaches);
 
-    const recommendPlanner = new RecommendPlanner(coaches, cantEatMenuList);
-    recommendPlanner.start();
+    const recommendPlanner = new RecommendPlanner(coaches);
+    recommendPlanner.start(coaches, cantEatMenuList);
     OutputView.printMenuResult(recommendPlanner.getResult());
   }
 
