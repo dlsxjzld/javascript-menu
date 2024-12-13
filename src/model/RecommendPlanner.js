@@ -43,9 +43,35 @@ export default class RecommendPlanner {
       (myCategory) => myCategory === category,
     ).length;
     if (categoryCount < 2) {
+      const coachCount = 0;
       this.categories.push(category);
+      this.pushMenuToAllCoach(category, coachCount);
     }
     this.pickCategory();
+  }
+
+  pushMenuToAllCoach(category, coachCount) {
+    if (coachCount === this.coaches.length) {
+      return;
+    }
+    const coach = this.coaches[coachCount];
+    this.pushMenuToCoach(coach, category);
+
+    this.pushMenuToAllCoach(category, coachCount + 1);
+  }
+
+  pushMenuToCoach(coach, category) {
+    const cantEatList = this.coachesCantEat[coach];
+    const menu = this.pickMenu(category);
+
+    if (
+      cantEatList.includes(menu) ||
+      this.foodForCoaches[coach].includes(menu)
+    ) {
+      this.pushMenuToCoach(coach, category);
+      return;
+    }
+    this.foodForCoaches[coach].push(menu);
   }
 
   pickMenu(category) {
