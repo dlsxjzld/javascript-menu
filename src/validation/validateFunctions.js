@@ -8,13 +8,6 @@ export const toThrowNewError = (condition, errorMessage) => {
   }
 };
 
-const hasEmptySpace = (input) => [
-  toThrowNewError(
-    input.includes(' '),
-    `${ERROR_MESSAGE.INVALID} 공백은 안됩니다.`,
-  ),
-];
-
 const isEmptyString = (input) => {
   toThrowNewError(
     input === '',
@@ -54,7 +47,6 @@ const checkDuplicateCoach = (input) => {
 };
 
 export const validateCoaches = (input) => {
-  hasEmptySpace(input);
   isEmptyString(input);
   checkCoachesNameLength(input);
   checkCoachesCount(input);
@@ -89,8 +81,18 @@ const checkSampleMenu = (input) => {
   );
 };
 
+const checkDuplicateMenu = (input) => {
+  if (input === '') return;
+  const originFoods = input.split(',');
+  const setFoods = new Set(originFoods);
+  toThrowNewError(
+    originFoods.length !== setFoods.size,
+    '중복된 음식은 안됩니다.',
+  );
+};
+
 export const validateCantEatFoods = (input) => {
-  hasEmptySpace(input);
   checkFoodsCount(input);
   checkSampleMenu(input);
+  checkDuplicateMenu(input);
 };
