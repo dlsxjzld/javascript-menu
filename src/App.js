@@ -1,6 +1,6 @@
 import { InputView } from './view/InputView.js';
 import { OutputView } from './view/OutputView.js';
-import {} from './validation/validateFunctions.js';
+import { validateSomething } from './validation/validateFunctions.js';
 
 import { MESSAGE } from './constants/message.js';
 
@@ -14,7 +14,9 @@ const SAMPLE = {
 };
 
 class App {
-  async play() {}
+  async play() {
+    OutputView.printMenuInstruction();
+  }
 }
 
 export default App;
